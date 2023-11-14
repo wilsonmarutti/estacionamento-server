@@ -13,3 +13,12 @@ exports.addValorPago = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.listValoresPagos = async (req, res) => {
+    try {
+        const valoresPagos = await ValoresPagos.find();
+        res.status(200).json(valoresPagos);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
