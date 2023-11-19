@@ -20,7 +20,7 @@ app.post('/vagas/editar', vagasController.editVaga);
 
 app.get('/pagamento', pagamentoController.listPagamentos);
 app.get('/vagas', vagasController.listVagas);
-app.get('/valores-pagos',valoresPagosController.listValoresPagos);
+//app.get('/valores-pagos',valoresPagosController.listValoresPagos);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
