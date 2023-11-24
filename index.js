@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+
 const bodyParser = require('body-parser');
 
 require('./scr/configs/db')
@@ -8,6 +10,7 @@ const pagamentoController = require('./scr/controllers/pagamento-controllers');
 const valoresPagosController = require('./scr/controllers/valores-pagos-controllers');
 
 const app = express();
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
