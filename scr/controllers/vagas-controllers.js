@@ -43,3 +43,27 @@ exports.editVaga = async (req, res) => {
     }
 };
 
+exports.saveVagas = async (req, res) => {
+    try {
+        const { id, placaCarro } = req.body; 
+        const vaga = await Vagas.findById(id);
+
+        if (!vaga) {
+            return res.status(404).json({ error: 'Vaga não encontrada.' });
+        }
+
+        vaga.disponivel = false;
+        vaga.placaCarro = placaCarro; 
+
+        // Salvar as alterações na vaga
+        const updatedVaga = await vaga.save();
+
+        // Responder com a vaga atualizada
+        res.status(200).json(updatedVaga);
+
+    } catch (error) {
+        // Se ocorrer algum erro, retorne um erro 500 com a mensagem
+        res.status(500).json({ error: error.message });
+    }
+};
+
