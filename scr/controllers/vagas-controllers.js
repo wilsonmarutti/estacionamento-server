@@ -34,6 +34,8 @@ exports.editVaga = async (req, res) => {
 
         vaga.placaCarro = null;
         vaga.disponivel = true;
+        vaga.dataHoraEntrada = null;
+        vaga.dataHoraSaida = null;
 
         const updatedVaga = await vaga.save();
         res.status(200).json(updatedVaga);
@@ -45,7 +47,7 @@ exports.editVaga = async (req, res) => {
 
 exports.saveVagas = async (req, res) => {
     try {
-        const { id, placaCarro } = req.body; 
+        const { id, placaCarro, dataHoraEntrada } = req.body; 
         const vaga = await Vagas.findById(id);
 
         if (!vaga) {
@@ -54,6 +56,7 @@ exports.saveVagas = async (req, res) => {
 
         vaga.disponivel = false;
         vaga.placaCarro = placaCarro; 
+        vaga.dataHoraEntrada = dataHoraEntrada;
 
         // Salvar as alterações na vaga
         const updatedVaga = await vaga.save();

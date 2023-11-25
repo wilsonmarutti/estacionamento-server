@@ -5,6 +5,8 @@ const vagasInterface = new mongoose.Schema({
     numVaga: Number,
     disponivel: Boolean,
     placaCarro: String,
+    dataHoraEntrada: Date,
+    dataHoraSaida: Date,
 });
 
 const vagas = mongoose.model('Vagas', vagasInterface);
