@@ -10,7 +10,12 @@ const pagamentoController = require('./scr/controllers/pagamento-controllers');
 const valoresPagosController = require('./scr/controllers/valores-pagos-controllers');
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: '*', 
+  methods: '*',
+  allowedHeaders: '*'
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
