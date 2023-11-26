@@ -28,7 +28,7 @@ exports.listPagamentos = async (req, res) => {
 
 exports.calcularValor = async (req, res) => {
     try {
-        const { id, valorPorHora } = req.body;
+        const { id, valorPorHora, dataEntrada, dataSaida } = req.body;
 
         if (!id || !valorPorHora) {
             return res.status(400).json({ error: 'ID e valorPorHora são campos obrigatórios.' });
@@ -39,9 +39,6 @@ exports.calcularValor = async (req, res) => {
         if (!pagamento) {
             return res.status(404).json({ error: 'Pagamento não encontrado.' });
         }
-
-        const dataEntrada = new Date(pagamento.dataEntrada);
-        const dataSaida = new Date(pagamento.dataSaida);
         const diferencaHoras = (dataSaida - dataEntrada) / (1000 * 60 * 60);
 
         const valorTotal = diferencaHoras * valorPorHora;
