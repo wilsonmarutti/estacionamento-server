@@ -22,10 +22,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.post('/vagas', vagasController.addVaga);
-app.post('/pagamento', pagamentoController.addPagamento);
-app.post('/pagamento/calcular-valor', pagamentoController.calcularValor);
 app.post('/vagas/editar', vagasController.editVaga);
 app.post('/vagas/salvar', vagasController.saveVagas);
+app.post('/pagamento/processarPagamento', pagamentoController.processarPagamento);
 
 app.get('/pagamento', pagamentoController.listPagamentos);
 app.get('/vagas', vagasController.listVagas);

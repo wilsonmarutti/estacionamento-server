@@ -6,6 +6,7 @@ const pagamentoInterface = new mongoose.Schema({
     dataSaida: Date,
     placaCarro: String,
     pago: Boolean,
+    valorTotal: Number,
 });
 
 const pagamento = mongoose.model('Pagamento', pagamentoInterface);

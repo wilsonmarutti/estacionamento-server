@@ -1,22 +1,6 @@
 const Pagamento = require('../models/pagamento-models');
 const ValoresPagosController = require('./valores-pagos-controllers');
 
-exports.addPagamento = async (req, res) => {
-    try {
-        const pagamento = new Pagamento({
-            id: req.body.id,
-            dataEntrada: req.body.dataEntrada,
-            dataSaida: req.body.dataSaida,
-            placaCarro: req.body.placaCarro,
-            pago: req.body.pago,
-        });
-        const savedPagamento = await pagamento.save();
-        res.status(201).json(savedPagamento);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-}
-
 exports.listPagamentos = async (req, res) => {
     try {
         const pagamentos = await Pagamento.find();
@@ -26,32 +10,38 @@ exports.listPagamentos = async (req, res) => {
     }
 }
 
-exports.calcularValor = async (req, res) => {
+exports.processarPagamento = async (req, res) => {
     try {
-        const { id, valorPorHora, dataEntrada, dataSaida } = req.body;
+        // Destructure os dados necessários do corpo da requisição
+        const { placaCarro, id, dataEntrada, dataSaida, valorPorHora, pago } = req.body;
 
-        if (!id || !valorPorHora) {
-            return res.status(400).json({ error: 'ID e valorPorHora são campos obrigatórios.' });
+        // Verifica se todos os dados necessários foram fornecidos
+        if (!id || !valorPorHora || !placaCarro || !dataEntrada || !dataSaida) {
+            return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
         }
 
-        const pagamento = await Pagamento.findById(id);
-
-        if (!pagamento) {
-            return res.status(404).json({ error: 'Pagamento não encontrado.' });
-        }
-        const diferencaHoras = (dataSaida - dataEntrada) / (1000 * 60 * 60);
-
+        // Calcula o valor a ser pago
+        const diferencaHoras = (new Date(dataSaida).getTime() - new Date(dataEntrada).getTime()) / (1000 * 60 * 60);
         const valorTotal = diferencaHoras * valorPorHora;
 
-        const novoValorPago = {
+        // Cria um novo objeto de pagamento com os dados fornecidos e o valor calculado
+        const novoPagamento = new Pagamento({
+            id,
+            placaCarro,
+            dataEntrada,
+            dataSaida,
             valorTotal: valorTotal,
-            data: pagamento.dataSaida,
-        };
-        await ValoresPagosController.addValorPago({ body: novoValorPago }, res);
+            pago
+        });
 
-        return res.status(200).json({ valorTotal });
+        // Salva o novo pagamento no banco de dados
+        const savedPagamento = await novoPagamento.save();
+
+        // Responde com o pagamento salvo e o valor total
+        return res.status(201).json({ savedPagamento });
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        // Em caso de erro, retorna um status 500 com a mensagem de erro
+        return res.status(500).json({ error: error.message });
     }
 };
