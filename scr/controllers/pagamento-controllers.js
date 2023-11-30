@@ -27,7 +27,7 @@ exports.processarPagamento = async (req, res) => {
         const diferencaEmMinutos = diferencaEmMilissegundos / 1000 / 60;
         
         // Calcula o custo total
-        const custoTotal = diferencaEmMinutos * valorPorMinuto;
+        const custoTotal = diferencaEmMinutos * valorPorHora;
         
         // Cria um novo objeto de pagamento com os dados fornecidos e o valor calculado
         const novoPagamento = new Pagamento({
