@@ -19,8 +19,11 @@ exports.processarPagamento = async (req, res) => {
         if (!id || !valorPorHora || !placaCarro || !dataEntrada || !dataSaida) {
             return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
         }
+
+        const entrada = new Date(dataEntrada);
+        const saida = new Date(dataSaida);
                 
-        const diferencaEmMilissegundos = dataSaida.getTime() - dataEntrada.getTime();
+        const diferencaEmMilissegundos = saida.getTime() - entrada.getTime();
         const diferencaEmMinutos = diferencaEmMilissegundos / 1000 / 60;
         
         // Calcula o custo total
