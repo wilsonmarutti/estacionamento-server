@@ -14,32 +14,34 @@ exports.processarPagamento = async (req, res) => {
     try {
         // Destructure os dados necessários do corpo da requisição
         const { placaCarro, id, dataEntrada, dataSaida, valorPorHora, pago } = req.body;
-
+        
         // Verifica se todos os dados necessários foram fornecidos
         if (!id || !valorPorHora || !placaCarro || !dataEntrada || !dataSaida) {
             return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
         }
-
-        // Calcula o valor a ser pago
-        const diferencaHoras = (new Date(dataSaida).getTime() - new Date(dataEntrada).getTime()) / (1000 * 60 * 60);
-        const valorTotal = diferencaHoras * valorPorHora;
-
+                
+        const diferencaEmMilissegundos = dataSaida.getTime() - dataEntrada.getTime();
+        const diferencaEmMinutos = diferencaEmMilissegundos / 1000 / 60;
+        
+        // Calcula o custo total
+        const custoTotal = diferencaEmMinutos * valorPorMinuto;
+        
         // Cria um novo objeto de pagamento com os dados fornecidos e o valor calculado
         const novoPagamento = new Pagamento({
             id,
             placaCarro,
             dataEntrada,
             dataSaida,
-            valorTotal: valorTotal,
+            valorTotal: custoTotal,
             pago
         });
-
+        
         // Salva o novo pagamento no banco de dados
         const savedPagamento = await novoPagamento.save();
-
+        
         // Responde com o pagamento salvo e o valor total
         return res.status(201).json({ savedPagamento });
-
+        
     } catch (error) {
         // Em caso de erro, retorna um status 500 com a mensagem de erro
         return res.status(500).json({ error: error.message });
