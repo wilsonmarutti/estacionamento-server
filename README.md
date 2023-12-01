@@ -13,15 +13,3 @@
    * `npm i` para instalar todas as dependências do projeto.
    * execute o comando `node index.js`, isso fara com que suba aplicação e consiga acompanhar os logs de requisição rodando via [postman](https://www.postman.com/downloads/)
 
-# Criando banco
-* Visite o site do [MongoDb](https://www.mongodb.com/atlas/database) Atlas e crie uma nova conta ou faça login se já tiver uma.
-* Crie um Cluster:
-  * No painel do MongoDB Atlas, crie um novo cluster. Escolha o provedor de nuvem e a região que preferir.
-* Configure o Acesso ao Cluster:
-  * Na seção "Security", configure o "Database Access" para adicionar um novo usuário ao banco de dados com uma senha.
-  * Em "Network Access", adicione um endereço IP ou permita o acesso de qualquer lugar (não recomendado para produção).
-* Conecte-se ao Cluster:
-  * Na seção do cluster, escolha "Connect" e siga as instruções para obter a string de conexão.
-  * Adicione esta string de conexão ao seu arquivo .env ou configuração do projeto Node.js.
-* Verifique a Conexão:
-  * Teste a conexão com o MongoDB Atlas a partir do seu projeto Node.js para garantir que tudo está funcionando corretamente.
